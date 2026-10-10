@@ -35,6 +35,7 @@ public class MenuService {
                 .map(item -> new MenuItemResponse(
                         item.getCategory().getId(),
                         item.getCategory().getName(),
+                        item.getId(),
                         item.getName(),
                         item.getDescription(),
                         item.getPrice(),
