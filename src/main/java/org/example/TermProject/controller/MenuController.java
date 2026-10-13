@@ -4,6 +4,7 @@ import org.example.TermProject.dto.MenuCategoryResponse;
 import org.example.TermProject.dto.MenuItemResponse;
 import org.example.TermProject.service.MenuService;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
