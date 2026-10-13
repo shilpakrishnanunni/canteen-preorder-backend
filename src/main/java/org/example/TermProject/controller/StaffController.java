@@ -15,4 +15,6 @@ public class StaffController {
     public String root() {
         return "Hello, Staff!";
     }
+
+    // TODO create/update/delete menu items and categories
 }

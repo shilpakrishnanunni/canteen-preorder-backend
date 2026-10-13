@@ -22,6 +22,7 @@ CREATE TABLE IF NOT EXISTS users (
 CREATE TABLE IF NOT EXISTS menu_categories (
     id BIGSERIAL PRIMARY KEY,
     name VARCHAR(100) UNIQUE NOT NULL,
+    slug VARCHAR(100) UNIQUE NOT NULL,
     status BOOLEAN NOT NULL DEFAULT TRUE
 );
 
@@ -42,7 +43,7 @@ CREATE TABLE IF NOT EXISTS orders (
     user_id BIGINT REFERENCES users(id),
     order_token VARCHAR(32) NOT NULL UNIQUE,
 --     status order_status_enum DEFAULT 'PLACED',
-    status VARCHAR(20) NOT NULL DEFAULT 'PLACED'
+    status VARCHAR(20) NOT NULL DEFAULT 'PLACED',
     total_amount DECIMAL(10,2) NOT NULL CHECK (total_amount >= 0),
     created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
@@ -66,12 +67,12 @@ VALUES
     ('Alice Williams', 'alice@example.com', '$2a$10$HgnDmLCq7l9hzV/TgG2XZ.ZRPbylwXHip4txMPkx9oi1SWlscgVqW', 'STAFF'),
     ('Charlie Brown', 'charlie@example.com', '$2a$10$HgnDmLCq7l9hzV/TgG2XZ.ZRPbylwXHip4txMPkx9oi1SWlscgVqW', 'ADMIN');
 
-INSERT INTO menu_categories (name)
+INSERT INTO menu_categories (name, slug)
 VALUES
-    ('Beverages'),
-    ('Snacks'),
-    ('Biscuits'),
-    ('Chocolates');
+    ('Beverages', 'beverages'),
+    ('Snacks', 'snacks'),
+    ('Biscuits', 'biscuits'),
+    ('Chocolates', 'chocolates');
 
 INSERT INTO menu_items (
     category_id,
@@ -173,25 +174,29 @@ VALUES
         TRUE
     );
 
-INSERT INTO orders (user_id, status, total_amount)
+INSERT INTO orders (user_id, order_token, status, total_amount)
 VALUES
     (
         (SELECT id FROM users WHERE email = 'john@example.com'),
+        'ABC123',
         'COMPLETED',
         70.00
     ),
     (
         (SELECT id FROM users WHERE email = 'jane@example.com'),
+        'DEF123',
         'PREPARING',
         55.00
     ),
     (
         (SELECT id FROM users WHERE email = 'bob@example.com'),
+        'GHI123',
         'PLACED',
         100.00
     ),
     (
         (SELECT id FROM users WHERE email = 'john@example.com'),
+        'JKL123',
         'CANCELLED',
         40.00
     );

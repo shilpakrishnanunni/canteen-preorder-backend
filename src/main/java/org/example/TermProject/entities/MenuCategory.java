@@ -16,6 +16,9 @@ public class MenuCategory {
     @Column(nullable = false, unique=true, length=100)
     private String name;
 
+    @Column(nullable = false, unique=true, length=100)
+    private String slug;
+
     @Column(nullable = false)
     private Boolean status;
 
@@ -23,9 +26,11 @@ public class MenuCategory {
     }
 
     protected MenuCategory(
-            String name
+            String name,
+            String slug
     ) {
         this.name = name;
+        this.slug = slug;
         this.status = true;
     }
 }
