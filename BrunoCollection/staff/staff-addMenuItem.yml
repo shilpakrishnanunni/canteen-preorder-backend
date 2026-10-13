@@ -1,0 +1,26 @@
+info:
+  name: /staff/addMenuItem
+  type: http
+  seq: 5
+
+http:
+  method: POST
+  url: http://localhost:8080/staff/addMenuItem
+  body:
+    type: json
+    data: |-
+      {
+        "category_id": 1,
+        "name": "Samosa",
+        "description": "it's a samosa",
+        "price": 18.00,
+        "image_url": null
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: false
