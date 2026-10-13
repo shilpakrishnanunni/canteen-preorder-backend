@@ -88,8 +88,11 @@ public class OrderService {
         orderItemRepository.saveAll(orderItems);
 
         return new OrderResponse(
+                order.getId(),
                 order.getOrderToken(),
-                order.getStatus()
+                order.getStatus(),
+                order.getTotalAmount(),
+                order.getCreatedAt()
         );
     }
 
