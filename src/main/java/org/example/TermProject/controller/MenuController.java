@@ -9,6 +9,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import org.example.TermProject.dto.CreateMenuItemRequest;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
+
 import java.util.List;
 
 @RestController
@@ -27,9 +33,22 @@ public class MenuController {
         return menuService.getMenu(categorySlug);
     }
 
+    @GetMapping("/{id}")
+    public MenuItemResponse getMenuItemById(
+            @PathVariable Long id
+    ){
+        return menuService.getMenuItemByid(id);
+    }
+
     @GetMapping("/categories")
     public List<MenuCategoryResponse> getCategories() {
         return menuService.getCategories();
     }
 
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public MenuItemResponse addMenuItem(
+            @RequestBody CreateMenuItemRequest request) {
+        return menuService.addMenuItem(request);
+}
 }

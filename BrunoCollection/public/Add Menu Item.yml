@@ -1,0 +1,16 @@
+info:
+  name: Add Menu Item
+  type: http
+  seq: 7
+
+http:
+  method: POST
+  url: http://localhost:8080/menu
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: false
