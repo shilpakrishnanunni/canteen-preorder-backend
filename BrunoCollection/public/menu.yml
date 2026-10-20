@@ -5,11 +5,12 @@ info:
 
 http:
   method: GET
-  url: http://localhost:8080/menu?categoryId=1
+  url: http://localhost:8080/menu
   params:
-    - name: categoryId
-      value: "1"
+    - name: categorySlug
+      value: ""
       type: query
+      disabled: true
   auth: inherit
 
 settings:
