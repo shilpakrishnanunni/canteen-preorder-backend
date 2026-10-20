@@ -14,7 +14,8 @@ http:
         "name": "Samosa",
         "description": "it's a samosa",
         "price": 20.00,
-        "image_url": null
+        "image_url": null,
+        "available": false
       }
   auth: inherit
 
