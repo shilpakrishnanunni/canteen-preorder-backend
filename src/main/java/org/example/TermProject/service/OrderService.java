@@ -1,9 +1,6 @@
 package org.example.TermProject.service;
 
-import org.example.TermProject.dto.CreateOrderRequest;
-import org.example.TermProject.dto.OrderItemRequest;
-import org.example.TermProject.dto.OrderResponse;
-import org.example.TermProject.dto.OrderTrackingResponse;
+import org.example.TermProject.dto.*;
 import org.example.TermProject.entities.MenuItem;
 import org.example.TermProject.entities.Order;
 import org.example.TermProject.entities.OrderItem;
@@ -104,14 +101,34 @@ public class OrderService {
                 .toUpperCase();
     }
 
+    @Transactional(readOnly = true)
     public OrderTrackingResponse trackOrder(String orderToken) {
         Order order = orderRepository
                 .findByOrderToken(orderToken)
                 .orElseThrow(() -> new RuntimeException("Order not found"));
 
+//        return new OrderTrackingResponse(
+//                order.getOrderToken(),
+//                order.getStatus(),
+//                order.getCreatedAt(),
+//
+//        );
+        List<OrderItemTrackingResponse> items = orderItemRepository.findByOrderId(order.getId())
+                .stream()
+                .map(item -> new OrderItemTrackingResponse(
+                        item.getMenuItem().getName(),
+                        item.getQuantity(),
+                        item.getUnitPrice(),
+                        item.getUnitPrice().multiply(BigDecimal.valueOf(item.getQuantity()))
+                ))
+                .toList();
         return new OrderTrackingResponse(
                 order.getOrderToken(),
-                order.getStatus()
+                order.getStatus(),
+                order.getCreatedAt(),
+                order.getUpdatedAt(),
+                order.getTotalAmount(),
+                items
         );
     }
 
