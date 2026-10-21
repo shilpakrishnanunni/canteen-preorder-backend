@@ -63,7 +63,7 @@ public class StaffService {
 
     @Transactional
     public MenuItemResponse updateMenuItem(UpdateMenuItemRequest request) {
-        MenuItem item = menuItemRepository.findById(request.id())
+        MenuItem item = menuItemRepository.findById(request.menuItemId())
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.NOT_FOUND, "Menu item not found"));
 

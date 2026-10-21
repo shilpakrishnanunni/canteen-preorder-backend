@@ -3,7 +3,7 @@ package org.example.TermProject.dto;
 import java.math.BigDecimal;
 
 public record UpdateMenuItemRequest(
-        Long id,
+        Long menuItemId,
         String name,
         String description,
         BigDecimal price,

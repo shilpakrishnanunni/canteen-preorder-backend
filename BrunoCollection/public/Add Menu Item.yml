@@ -5,7 +5,17 @@ info:
 
 http:
   method: POST
-  url: http://localhost:8080/menu
+  url: http://localhost:8080/staff/addMenuItem
+  body:
+    type: json
+    data: |-
+      {
+        "category_id": 2,
+        "name": "Snack",
+        "description": "snack snack snack",
+        "price": 20,
+        "image_url": "https://example.com/dish.jpg"
+      }
   auth: inherit
 
 settings:
