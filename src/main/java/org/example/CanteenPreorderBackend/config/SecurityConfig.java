@@ -52,7 +52,7 @@ public class SecurityConfig {
         CorsConfiguration configuration = new CorsConfiguration();
 
         configuration.setAllowedOrigins(
-                List.of("http://localhost:5173", "https://canteen-preorder-backend.onrender.com")
+                List.of("http://localhost:5173", "https://canteen-preorder-c219.onrender.com")
         );
 
         configuration.setAllowedMethods(
