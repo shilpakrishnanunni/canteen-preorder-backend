@@ -1,0 +1,27 @@
+info:
+  name: /staff/updateMenuItem
+  type: http
+  seq: 7
+
+http:
+  method: PUT
+  url: http://localhost:8080/staff/updateMenuItem
+  body:
+    type: json
+    data: |-
+      {
+        "menuItemId": 3,
+        "name": "Samosa",
+        "description": "it's a samosa",
+        "price": 20.00,
+        "image_url": null,
+        "available": false
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: false
