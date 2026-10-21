@@ -12,6 +12,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.*;
 
 @Service
@@ -107,12 +110,6 @@ public class OrderService {
                 .findByOrderToken(orderToken)
                 .orElseThrow(() -> new RuntimeException("Order not found"));
 
-//        return new OrderTrackingResponse(
-//                order.getOrderToken(),
-//                order.getStatus(),
-//                order.getCreatedAt(),
-//
-//        );
         List<OrderItemTrackingResponse> items = orderItemRepository.findByOrderId(order.getId())
                 .stream()
                 .map(item -> new OrderItemTrackingResponse(
@@ -132,4 +129,68 @@ public class OrderService {
         );
     }
 
+    @Transactional(readOnly = true)
+    public List<StaffOrderResponse> getOrdersByDate(LocalDate startDate, LocalDate endDate){
+        if (startDate != null && endDate != null && endDate.isBefore(startDate)) {
+            throw new IllegalArgumentException("endDate must be on or after startDate");
+        }
+
+        OffsetDateTime start = startDate == null ? null : startDate.atStartOfDay().atOffset(ZoneOffset.UTC);
+        OffsetDateTime end = endDate == null ? null : endDate.plusDays(1).atStartOfDay().atOffset(ZoneOffset.UTC);
+        List<Order> orders;
+
+        if (start != null && end != null) {
+            orders = orderRepository
+                    .findByCreatedAtGreaterThanEqualAndCreatedAtLessThan(start, end);
+        } else if (start != null) {
+            orders = orderRepository.findByCreatedAtGreaterThanEqual(start);
+        } else if (end != null) {
+            orders = orderRepository.findByCreatedAtLessThan(end);
+        } else {
+            orders = orderRepository.findAll();
+        }
+
+        return orders.stream()
+                .map(order-> new StaffOrderResponse(
+                        order.getId(),
+                        order.getOrderToken(),
+                        order.getStatus(),
+                        order.getTotalAmount(),
+                        order.getCreatedAt(),
+                        order.getItems().stream()
+                                .map(item -> new StaffOrderItemResponse(
+                                        item.getMenuItem().getName(),
+                                        item.getQuantity(),
+                                        item.getUnitPrice()
+                                ))
+                                .toList()
+                ))
+                .toList();
+    }
+
+    @Transactional
+    public void updateOrderStatus(String orderToken, OrderStatus newStatus) {
+        Order order = orderRepository.findByOrderToken(orderToken)
+                .orElseThrow(() -> new RuntimeException("Order Not Found"));
+
+        OrderStatus currentStatus = order.getStatus();
+
+        boolean validTransition =
+                (currentStatus == OrderStatus.PLACED &&
+                        (newStatus == OrderStatus.ACCEPTED ||
+                                newStatus == OrderStatus.REJECTED))
+                        ||
+                        (currentStatus == OrderStatus.ACCEPTED &&
+                                newStatus == OrderStatus.COMPLETED);
+
+        if (!validTransition) {
+            throw new IllegalArgumentException(
+                    "Cannot change order status from " + currentStatus +
+                            " to " + newStatus
+            );
+        }
+
+        order.setStatus(newStatus);
+        order.setUpdatedAt(OffsetDateTime.now());
+    }
 }

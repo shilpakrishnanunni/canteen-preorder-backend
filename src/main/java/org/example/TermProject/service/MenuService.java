@@ -44,7 +44,8 @@ public class MenuService {
                         item.getName(),
                         item.getDescription(),
                         item.getPrice(),
-                        item.getImageUrl()
+                        item.getImageUrl(),
+                        item.getAvailable()
                 ))
                 .toList();
     }
@@ -64,7 +65,8 @@ public class MenuService {
                     item.getName(),
                     item.getDescription(),
                     item.getPrice(),
-                    item.getImageUrl()
+                    item.getImageUrl(),
+                        item.getAvailable()
                 );
     }
     public List<MenuCategoryResponse> getCategories() {
@@ -115,7 +117,8 @@ public class MenuService {
             saved.getName(),
             saved.getDescription(),
             saved.getPrice(),
-            saved.getImageUrl()
+            saved.getImageUrl(),
+            saved.getAvailable()
     );
 }
 }
