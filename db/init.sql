@@ -185,7 +185,7 @@ VALUES
     (
         (SELECT id FROM users WHERE email = 'jane@example.com'),
         'DEF123',
-        'PREPARING',
+        'ACCEPTED',
         55.00
     ),
     (
@@ -197,7 +197,7 @@ VALUES
     (
         (SELECT id FROM users WHERE email = 'john@example.com'),
         'JKL123',
-        'CANCELLED',
+        'REJECTED',
         40.00
     );
 
