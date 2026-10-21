@@ -5,8 +5,17 @@ info:
 
 http:
   method: GET
-  url: http://localhost:8080/staff/orders
-  auth: inherit
+  url: http://localhost:8080/staff/orders?startDate=&endDate=
+  params:
+    - name: startDate
+      value: ""
+      type: query
+    - name: endDate
+      value: ""
+      type: query
+  auth:
+    type: bearer
+    token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI0Iiwicm9sZSI6IlNUQUZGIiwiaWF0IjoxNzkyNTYxOTkyLCJleHAiOjE3OTI2NDgzOTJ9.dm4uxAKY_4YZnGZ7CCcQTEAl2i5pAr6cXajcZu6VQWc
 
 settings:
   encodeUrl: true

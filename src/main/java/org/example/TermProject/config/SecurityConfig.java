@@ -29,14 +29,15 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/**").permitAll()
-                        .requestMatchers("/staff/**").hasRole("STAFF")
-                        .requestMatchers("/admin/**").hasRole("ADMIN")
-                        .requestMatchers("/users/**").permitAll()
-                        .requestMatchers("/orders/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/menu/**").permitAll()
-                        .anyRequest().authenticated()
-//                        .anyRequest().permitAll()
+                                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                                .requestMatchers("/auth/**").permitAll()
+                                .requestMatchers("/staff/**").hasRole("STAFF")
+                                .requestMatchers("/admin/**").hasRole("ADMIN")
+                                .requestMatchers("/users/**").permitAll()
+                                .requestMatchers("/orders/**").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/menu/**").permitAll()
+                                .anyRequest().authenticated()
+        //                       .anyRequest().permitAll()
 
                 )
                 .addFilterBefore(

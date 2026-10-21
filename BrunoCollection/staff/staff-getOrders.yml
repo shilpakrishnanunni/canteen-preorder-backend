@@ -8,7 +8,7 @@ http:
   url: http://localhost:8080/staff/orders
   auth:
     type: bearer
-    token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI0Iiwicm9sZSI6IlNUQUZGIiwiaWF0IjoxNzkxODI0MTMxLCJleHAiOjE3OTE5MTA1MzF9.VhD7CkgdACy9TTR-EcguZcnmqu0mznazV18t4zgx3tI
+    token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI0Iiwicm9sZSI6IlNUQUZGIiwiaWF0IjoxNzkxODcxMTY0LCJleHAiOjE3OTE5NTc1NjR9.Wk4Gs4djxHXpSuJuRI8xjqtYjm-WQGedj5W-U1BpU4Y
 
 settings:
   encodeUrl: true

@@ -7,6 +7,11 @@ import org.example.TermProject.entities.MenuItem;
 import org.example.TermProject.repository.MenuCategoryRepository;
 import org.example.TermProject.repository.MenuItemRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
+
+import org.example.TermProject.dto.CreateMenuItemRequest;
+import java.math.BigDecimal;
 
 import java.util.List;
 
@@ -39,11 +44,31 @@ public class MenuService {
                         item.getName(),
                         item.getDescription(),
                         item.getPrice(),
-                        item.getImageUrl()
+                        item.getImageUrl(),
+                        item.getAvailable()
                 ))
                 .toList();
     }
 
+    public MenuItemResponse getMenuItemByid(Long id){
+        MenuItem item = menuItemRepository.findById(id)
+                .filter(MenuItem::getAvailable)
+                .orElseThrow(() -> new ResponseStatusException(
+                    HttpStatus.NOT_FOUND,
+                    "Menu Item not found"
+                ));
+
+                return new MenuItemResponse(
+                    item.getCategory().getId(),
+                    item.getCategory().getName(),
+                    item.getId(),
+                    item.getName(),
+                    item.getDescription(),
+                    item.getPrice(),
+                    item.getImageUrl(),
+                        item.getAvailable()
+                );
+    }
     public List<MenuCategoryResponse> getCategories() {
         return menuCategoryRepository.findAll()
                 .stream()
@@ -55,4 +80,45 @@ public class MenuService {
                 ))
                 .toList();
     }
+
+
+    //Add Menu ITem
+    public MenuItemResponse addMenuItem(CreateMenuItemRequest request) {
+    MenuCategory category = menuCategoryRepository.findById(request.categoryId())
+            .filter(MenuCategory::getStatus)
+            .orElseThrow(() -> new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "Invalid or inactive category"
+            ));
+
+    if (request.name() == null || request.name().isBlank()
+            || request.price() == null
+            || request.price().compareTo(BigDecimal.ZERO) <= 0) {
+        throw new ResponseStatusException(
+                HttpStatus.BAD_REQUEST,
+                "Name and a positive price are required"
+        );
+    }
+
+    MenuItem item = new MenuItem(
+            category,
+            request.name().trim(),
+            request.description(),
+            request.price(),
+            request.imageUrl()
+    );
+
+    MenuItem saved = menuItemRepository.save(item);
+
+    return new MenuItemResponse(
+            saved.getCategory().getId(),
+            saved.getCategory().getName(),
+            saved.getId(),
+            saved.getName(),
+            saved.getDescription(),
+            saved.getPrice(),
+            saved.getImageUrl(),
+            saved.getAvailable()
+    );
+}
 }

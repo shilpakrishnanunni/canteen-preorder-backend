@@ -1,0 +1,26 @@
+info:
+  name: Add Menu Item
+  type: http
+  seq: 7
+
+http:
+  method: POST
+  url: http://localhost:8080/staff/addMenuItem
+  body:
+    type: json
+    data: |-
+      {
+        "category_id": 2,
+        "name": "Snack",
+        "description": "snack snack snack",
+        "price": 20,
+        "image_url": "https://example.com/dish.jpg"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: false
