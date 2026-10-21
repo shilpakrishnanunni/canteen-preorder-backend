@@ -1,83 +1,61 @@
-# Spring Boot CRUD API
 
-Simple Spring Boot CRUD API with PostgreSQL, Docker Compose, and pgAdmin.
+# Canteen API
 
-## Requirements
+A REST API for a canteen ordering system built with Spring Boot and PostgreSQL.
 
-* Docker
-* Git
+## Features
 
-No Java or Maven installation is required when using Docker.
+- User registration and login with JWT authentication
+- Role-based access control for users, staff, and admins
+- Menu browsing by category
+- Menu item management
+- Order creation and tracking
+- Order status management for staff
 
-## Setup
+## Tech Stack
 
-Clone the repository:
+- Java 21
+- Spring Boot
+- Spring Data JPA
+- Spring Security
+- JWT authentication
+- PostgreSQL
+- Docker
 
-```bash
-git clone <repository-url>
-cd <project-directory>
-```
+## Getting Started
 
-Create `.env` in the project root:
+### Prerequisites
 
-```env
-POSTGRES_DB=spring_crud
-POSTGRES_USER=postgres
-POSTGRES_PASSWORD=change-me
-```
+- Java 21
+- Docker and Docker Compose
 
-## Run
+### Setup
 
-### Ubuntu
+1. Clone the repository.
 
-```bash
-docker compose up --build
-```
+2. Create a `.env` file in the project root with the required database and JWT configuration.
 
-### Windows
+3. Start the application and database:
 
-```powershell
-docker compose up --build
-```
+   ```bash
+   docker compose up --build
+   ```
 
-The API will be available at:
+The API will be available at `http://localhost:8080`.
 
-```text
-http://localhost:8080
-```
+## API
 
-pgAdmin:
+The API includes endpoints for authentication, menu browsing, order management, and staff operations.
 
-```text
-http://localhost:5050
-```
+Staff and admin endpoints require authentication with the appropriate role.
 
-## Stop
+API requests can be tested using the Bruno collection included in the repository.
 
-```bash
-docker compose down
-```
+## Database
 
-To remove the database volume and reset the database:
+PostgreSQL is used for data persistence. Hibernate manages schema updates during development.
 
-```bash
-docker compose down -v
-```
+## License
 
-The database seed runs automatically when the PostgreSQL volume is created for the first time.
-
-## Local Development Without Docker
-
-Requires Java 21 and Maven.
-
-### Ubuntu
-
-```bash
-./mvnw spring-boot:run
-```
-
-### Windows
-
-```powershell
-.\mvnw.cmd spring-boot:run
+This project is for learning purposes.
 ```
