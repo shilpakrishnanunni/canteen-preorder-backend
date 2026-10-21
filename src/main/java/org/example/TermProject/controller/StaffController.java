@@ -1,10 +1,12 @@
 package org.example.TermProject.controller;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.example.TermProject.dto.StaffOrderResponse;
 import org.example.TermProject.entities.OrderStatus;
 import org.example.TermProject.service.StaffService;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -35,8 +37,10 @@ public class StaffController {
 
     @GetMapping("/orders")
     public List<StaffOrderResponse> getOrders(
-            @RequestParam(required = false) List<OrderStatus> status) {
-        return staffService.getOrdersByStatus(status);
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate
+    ) {
+        return staffService.getOrdersByDate(startDate, endDate);
     }
 
     @GetMapping("/")

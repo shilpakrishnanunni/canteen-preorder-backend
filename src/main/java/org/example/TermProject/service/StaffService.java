@@ -9,11 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.example.TermProject.dto.StaffOrderResponse;
 import org.example.TermProject.dto.StaffOrderItemResponse;
 import org.example.TermProject.entities.Order;
-import org.example.TermProject.entities.OrderStatus;
 import org.example.TermProject.repository.OrderRepository;
 import org.example.TermProject.repository.OrderItemRepository;
-import org.example.TermProject.dto.MenuItemResponse;
-import org.example.TermProject.service.MenuService;
 import org.example.TermProject.dto.MenuItemResponse;
 import org.example.TermProject.dto.UpdateMenuItemRequest;
 import org.example.TermProject.entities.MenuItem;
@@ -24,6 +21,9 @@ import org.example.TermProject.dto.CreateMenuItemRequest;
 import org.example.TermProject.entities.MenuCategory;
 import org.example.TermProject.repository.MenuCategoryRepository;
 
+import java.time.LocalDate;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.List;
 
 @Service 
@@ -51,17 +51,27 @@ public class StaffService {
 
 
 @Transactional(readOnly = true)
- public List<StaffOrderResponse> getOrdersByStatus(List<OrderStatus> statuses){
+ public List<StaffOrderResponse> getOrdersByDate(LocalDate startDate, LocalDate endDate){
+    if (startDate != null && endDate != null && endDate.isBefore(startDate)) {
+        throw new IllegalArgumentException("endDate must be on or after startDate");
+    }
 
-        List<Order> orders;
+    OffsetDateTime start = startDate == null ? null : startDate.atStartOfDay().atOffset(ZoneOffset.UTC);
+    OffsetDateTime end = endDate == null ? null : endDate.plusDays(1).atStartOfDay().atOffset(ZoneOffset.UTC);
+    List<Order> orders;
 
-        if (statuses == null || statuses.isEmpty()) {
-            orders = orderRepository.findAll();
-        } else {
-            orders = orderRepository.findByStatusIn(statuses);
-        }
+    if (start != null && end != null) {
+        orders = orderRepository
+                .findByCreatedAtGreaterThanEqualAndCreatedAtLessThan(start, end);
+    } else if (start != null) {
+        orders = orderRepository.findByCreatedAtGreaterThanEqual(start);
+    } else if (end != null) {
+        orders = orderRepository.findByCreatedAtLessThan(end);
+    } else {
+        orders = orderRepository.findAll();
+    }
 
-        return orders.stream()
+    return orders.stream()
         .map(order-> new StaffOrderResponse(
             order.getId(),
             order.getOrderToken(),
@@ -78,6 +88,7 @@ public class StaffService {
         ))
         .toList();
     }
+
 @Transactional(readOnly = true)
 public List<MenuItemResponse>getStaffMenu(){
     return menuService.getMenu(null);

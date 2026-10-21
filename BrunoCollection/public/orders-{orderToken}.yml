@@ -6,21 +6,6 @@ info:
 http:
   method: GET
   url: http://localhost:8080/orders/BBA00C515176
-  body:
-    type: json
-    data: |-
-      {
-        "items": [
-          {
-            "menuItemId": 5,
-            "quantity": 2
-          },
-          {
-            "menuItemId": 8,
-            "quantity": 1
-          }
-        ]
-      }
   auth: inherit
 
 settings:
